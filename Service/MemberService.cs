@@ -2,6 +2,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using SmartGym.API.Data;
 using SmartGym.API.DTO.Member;
 using SmartGym.API.Execeptions;
@@ -35,6 +36,18 @@ namespace SmartGym.API.Service
                        
         }
 
+        public async Task<MemberGetResponseDTO> GetMeAsync(int id)
+        {
+            var member = await _context.Member.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (member == null)
+            {
+                throw new NotFoundException("Id not found");
+            }
+
+            return member.Adapt<MemberGetResponseDTO>();
+        }
+
         public async Task<IEnumerable<MemberGetResponseDTO>> GetAllAsync()
         {
             var members = await _context.Member.ToListAsync();
@@ -44,11 +57,13 @@ namespace SmartGym.API.Service
                 throw new NotFoundException("Members not found");
             }
 
-            return members.Adapt<List<MemberGetResponseDTO>>();
+            return members.Adapt<IEnumerable<MemberGetResponseDTO>>();
         }
 
         public async Task<MemberGetResponseDTO> CreateAsync(MemberPostRequestDTO dto)
         {
+            dto.Email.ToLower();
+
             bool existEmail = await _context.Member.AnyAsync(m  => m.Email == dto.Email);
 
             if (existEmail) 
@@ -72,6 +87,7 @@ namespace SmartGym.API.Service
 
             member.Password = _passwordHasher.HashPassword(string.Empty, dto.Password);
 
+            member.EnrollmentDate = DateOnly.FromDateTime(DateTime.Now);
             member.CreatedAt = DateTime.Now;
             member.UpdateAt = DateTime.Now;
 
@@ -98,13 +114,29 @@ namespace SmartGym.API.Service
 
             if(result == PasswordVerificationResult.Failed)
             {
-                throw new BadRequestException("Email or password invalid");
+                throw new UnAuthorizedException("Email or password invalid");
             }
 
             return _tokenService.GenerateToken(member);
         }
 
-        public async Task<MemberGetResponseDTO> UpdateAsync(int id, MemberUpdateRequestDTO dto)
+        public async Task UpdateMeAsync(int id, MemberUpdateRequestDTO dto)
+        {
+            var member = await _context.Member.FirstOrDefaultAsync(e => e.Id == id);
+
+            if(member == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            dto.Adapt(member);
+
+            member.UpdateAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(int id, MemberUpdateRequestDTO dto)
         {
             var member = await _context.Member.FindAsync(id);
 
@@ -118,9 +150,6 @@ namespace SmartGym.API.Service
             member.UpdateAt = DateTime.Now; 
 
             await _context.SaveChangesAsync();
-
-            return dto.Adapt<MemberGetResponseDTO>();
-
         }
         
         public async Task DeleteAsync(int id)

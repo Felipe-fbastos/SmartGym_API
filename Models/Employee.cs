@@ -12,14 +12,13 @@
         public decimal Salary { get; set; }
         public DateOnly HireDate { get; set; }
         public DateOnly Birthday { get; set; }
-        public DateOnly EnrollmentDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public bool IsDelete { get; private set; }
         public List<MemberTrainer> MemberTrainers { get; set; } = new List<MemberTrainer>();
         public List<GymClass> GymClasses { get; set; } = new List<GymClass>();
 
-        public void Deleted()
+        public void Delete()
         {
             IsDelete = true;
         }
