@@ -7,13 +7,14 @@
         public Member? Member { get; set; }
         public int IdTrainer { get; set; }
         public Employee? Employee { get; set; }
-        public DateOnly AssignedAt { get; set; }
-        public bool IsActive { get; set; }
+        public DateOnly AssignedAt { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+        public DateOnly DissolvedAt { get; set; }
+        public bool IsActive { get; set; } = true;
         
-
-        public void Active()
+        public void Deactivate()
         {
-            IsActive = true;
+            IsActive = false;
+            DissolvedAt = DateOnly.FromDateTime(DateTime.Now);
         }
     }
 }

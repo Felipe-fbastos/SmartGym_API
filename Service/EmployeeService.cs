@@ -50,11 +50,6 @@ namespace SmartGym.API.Service
         {
             var employees = await _context.Employee.ToListAsync();
 
-            if (!employees.Any())
-            {
-                throw new NotFoundException("Employee not found");
-            }
-
             return employees.Adapt<IEnumerable<EmployeeGetResponseDTO>>();
         }
 
