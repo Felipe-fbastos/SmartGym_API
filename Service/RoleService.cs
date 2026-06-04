@@ -16,13 +16,6 @@ namespace SmartGym.API.Service
             _context = context;
         }
 
-        public async Task<IEnumerable<RoleGetResponseDTO>> GetAsync()
-        {
-            var role = await _context.Roles.ToListAsync();
-
-            return role.Adapt<IEnumerable<RoleGetResponseDTO>>();
-        }
-
         public async Task<RoleGetResponseDTO> GetByIdAsync(int id)
         {
             var role = await _context.Roles.FindAsync(id);

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartGym.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa90defc9ccec8d480e5ed2c1bfd807196df974e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d6abe3221055b6954f8aea575d589f50fa82b71")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartGym.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartGym.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

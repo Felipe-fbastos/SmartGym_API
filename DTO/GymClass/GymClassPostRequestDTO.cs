@@ -1,8 +1,11 @@
-﻿namespace SmartGym.API.DTO.GymClass
+﻿using System.Text.Json.Serialization;
+
+namespace SmartGym.API.DTO.GymClass
 {
     public class GymClassPostRequestDTO
     {
-        
+        [JsonIgnore]
+        public int Id { get; set; }
         public int IdTrainer { get; set; }
         public string Name { get; set; }
         public DateTime StartTime { get; set; }

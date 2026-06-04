@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartGym.API.Data;
+using SmartGym.API.DTO.GymClass;
 using SmartGym.API.Execeptions;
 using System.Runtime.InteropServices;
 
@@ -13,16 +14,16 @@ namespace SmartGym.API.Service
             _context = context;
         }
 
-        public async Task EnrollAsync(int memberId, int gymClassId)
+        public async Task EnrollAsync(GymClassEnrollmentPostDTO dto, int idMember)
         {
-            var member = await _context.Member.FindAsync(memberId);
+            var member = await _context.Member.FirstOrDefaultAsync(me => me.Id == idMember);
 
             if (member == null)
             {
                 throw new NotFoundException("Member not found");
             }
 
-            var gymclass = await _context.GymClasse.FindAsync(gymClassId);
+            var gymclass = await _context.GymClasse.FindAsync(dto.Id);
 
             if (gymclass == null)
             {
