@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SmartGym.API.Data;
 using SmartGym.API.Mapper;
 using SmartGym.API.Middleware;
+using SmartGym.API.Service;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterMaps();
+builder.Services.AddScoped<MemberService>();
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<MemberTrainerService>();
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<GymClassService>();
+builder.Services.AddScoped<EnrollmentService>();
 builder.Services.AddScoped<PasswordHasher<string>>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     {
